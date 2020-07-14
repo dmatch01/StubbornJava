@@ -21,6 +21,10 @@ class MetricsReporters {
             //.addNetworkInterceptor(HttpClient.getLoggingInterceptor())
             .build();
 
+        if (Configs.properties() == null) {
+            return;
+        }
+
         if (!Configs.properties().hasPath("metrics.graphite.host")
             || !Configs.properties().hasPath("metrics.grafana.api_key")) {
             log.info("Missing metrics reporter key or host skipping");
