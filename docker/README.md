@@ -83,7 +83,10 @@ Since the container has exposed the ReST Server Port `8080` to the `localhost` t
 $ curl -X POST "localhost:8080/quota/alloc" -d '
 {
   "id" : "job1",
-  "group" : "B"
+  "group" : "B",
+  "demand" : 1,
+  "priority" : 0,
+  "preemptable" : false
 }
 ';
 $
