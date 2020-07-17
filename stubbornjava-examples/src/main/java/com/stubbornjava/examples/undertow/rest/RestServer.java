@@ -1,7 +1,7 @@
 package com.stubbornjava.examples.undertow.rest;
 
 import static com.stubbornjava.common.undertow.handlers.CustomHandlers.timed;
-
+import com.ibm.quota.web.QuotaService;
 import com.stubbornjava.common.exceptions.ApiException;
 import com.stubbornjava.common.undertow.SimpleServer;
 import com.stubbornjava.common.undertow.handlers.ApiHandlers;
@@ -25,6 +25,8 @@ public class RestServer {
         .delete("/users/{email}", timed("deleteUser", UserRoutes::deleteUser))
         .get("/metrics", timed("metrics", CustomHandlers::metrics))
         .get("/health", timed("health", CustomHandlers::health))
+        .post("/quota/alloc", timed("allocateQuota", QuotaManagementRoutes::allocateQuota))
+        .post("/quota/release", timed("releaseQuota", QuotaManagementRoutes::releaseQuota))
         .setFallbackHandler(timed("notFound", RoutingHandlers::notFoundHandler))
     ;
 
@@ -46,6 +48,9 @@ public class RestServer {
 
     // {{start:server}}
     public static void main(String[] args) {
+    	
+    		QuotaService qs = new QuotaService("TestTree.json");
+    		
         // Once again pull in a bunch of common middleware.
         SimpleServer server = SimpleServer.simpleServer(Middleware.common(ROOT));
         server.start();
