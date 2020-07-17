@@ -5,5 +5,6 @@ dependencies {
     compile libs.hsqldb
     compile libs.hashids
     testCompile libs.junit
+    implementation files('build/libs/QuotaManagement.jar')
 }
 // {{end:dependencies}}
