@@ -78,19 +78,30 @@ Since the container has exposed the ReST Server Port `8080` to the `localhost` t
 
 [List Users](https://www.stubbornjava.com/posts/lightweight-embedded-java-rest-server-without-a-framework#list-users)
 
-#### Request an allocation
+#### Request an Allocation Example
 ```
 $ curl -X POST "localhost:8080/quota/alloc" -d '
 {
   "id" : "job1",
-  "group" : "B",
+  "group" : "M",
   "demand" : 1,
   "priority" : 0,
   "preemptable" : false
 }
 ';
+{
+  "id" : "job1",
+  "group" : "M",
+  "demand" : 1,
+  "priority" : 0,
+  "preemptable" : false,
+  "dateCreated" : "2020-07-19"
 $
-
+```
+#### Release an Allocation Example
+```
+$ curl -X DELETE "localhost:8080/quota/release/job1"
+$
 ```
 
 ### Stop the ReST Server
