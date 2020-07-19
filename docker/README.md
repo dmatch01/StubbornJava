@@ -89,6 +89,13 @@ $ curl -X POST "localhost:8080/quota/alloc" -d '
   "preemptable" : false
 }
 ';
+{
+  "id" : "job1",
+  "group" : "M",
+  "demand" : 1,
+  "priority" : 0,
+  "preemptable" : false,
+  "dateCreated" : "2020-07-19"
 $
 ```
 #### Release an allocation
