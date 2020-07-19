@@ -83,14 +83,21 @@ Since the container has exposed the ReST Server Port `8080` to the `localhost` t
 $ curl -X POST "localhost:8080/quota/alloc" -d '
 {
   "id" : "job1",
-  "group" : "B",
+  "group" : "M",
   "demand" : 1,
   "priority" : 0,
   "preemptable" : false
 }
 ';
+```
+#### Release an allocation
+```
+$ curl -X POST "localhost:8080/quota/release" -d '
+{
+  "id" : "job1"
+}
+';
 $
-
 ```
 
 ### Stop the ReST Server
