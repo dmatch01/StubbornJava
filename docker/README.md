@@ -80,7 +80,7 @@ Since the container has exposed the ReST Server Port `8080` to the `localhost` t
 
 #### Request an Allocation Example
 ```
-$ curl -X POST "localhost:8080/quota/alloc" -d '
+$ curl -X POST "localhost:8081/quota/alloc" -d '
 {
   "id" : "job1",
   "group" : "M",
@@ -100,7 +100,7 @@ $
 ```
 #### Release an Allocation Example
 ```
-$ curl -X DELETE "localhost:8080/quota/release/job1"
+$ curl -X DELETE "localhost:8081/quota/release/job1"
 $
 ```
 
