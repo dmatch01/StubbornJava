@@ -2,8 +2,11 @@ package com.stubbornjava.examples.undertow.rest;
 
 import java.util.List;
 
-import com.ibm.quota.web.QuotaService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.ibm.quota.web.QuotaService;
+import com.stubbornjava.common.Env;
 import com.stubbornjava.common.undertow.Exchange;
 import com.stubbornjava.common.undertow.handlers.ApiHandlers;
 
@@ -14,7 +17,9 @@ public class QuotaManagementRoutes {
     private static final QuotaAllocationCacheDao quotaAllocationCacheDao = new QuotaAllocationCacheDao();
     private static final QuotaManagementHTTPRequests quotaManagementHTTPRequests = new QuotaManagementHTTPRequests();
     private static final QuotaService quotaService = QuotaService.getInstance();
-   
+    // {{start:logger}}
+    private static final Logger log = LoggerFactory.getLogger(Env.class);
+
     public static void allocateQuota(HttpServerExchange exchange) {
         QuotaAllocObj quotaAllocReqInput = quotaManagementHTTPRequests.quotaAllocObj(exchange);
         String id = quotaAllocReqInput.getID();
@@ -23,6 +28,7 @@ public class QuotaManagementRoutes {
         int priority = quotaAllocReqInput.getPriority();
         boolean preemptable = quotaAllocReqInput.isPreemptable();
         
+        log.info("[allocateQuota] Requesting allocation for job: {} group: {}", id, group);
         boolean alloc = quotaService.allocConsumer(id, group, demand, priority, preemptable);
         if (alloc == false) {
             ApiHandlers.badRequest(exchange, String.format("QuotaAllocObj %s already exists.", quotaAllocReqInput.getID()));
@@ -37,6 +43,7 @@ public class QuotaManagementRoutes {
     public static void releaseQuota(HttpServerExchange exchange) {
     	String id  = quotaManagementHTTPRequests.id(exchange);
         
+        log.info("[releaseQuota] Releasing allocation for job: {}", id);
         boolean release = quotaService.releaseConsumer(id);
 
         // If you care about it you can handle it.

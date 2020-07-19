@@ -1,7 +1,12 @@
 package com.stubbornjava.examples.undertow.rest;
 
 import static com.stubbornjava.common.undertow.handlers.CustomHandlers.timed;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ibm.quota.web.QuotaService;
+import com.stubbornjava.common.Env;
 import com.stubbornjava.common.exceptions.ApiException;
 import com.stubbornjava.common.undertow.SimpleServer;
 import com.stubbornjava.common.undertow.handlers.ApiHandlers;
@@ -15,6 +20,9 @@ import io.undertow.server.RoutingHandler;
 
 public class RestServer {
 
+    // {{start:logger}}
+    private static final Logger log = LoggerFactory.getLogger(Env.class);
+
     // {{start:routes}}
     public static final RoutingHandler ROUTES = new RoutingHandler()
         .get("/users", timed("listUsers", UserRoutes::listUsers))
@@ -26,7 +34,7 @@ public class RestServer {
         .get("/metrics", timed("metrics", CustomHandlers::metrics))
         .get("/health", timed("health", CustomHandlers::health))
         .post("/quota/alloc", timed("allocateQuota", QuotaManagementRoutes::allocateQuota))
-        .post("/quota/release", timed("releaseQuota", QuotaManagementRoutes::releaseQuota))
+        .delete("/quota/release/{id}", timed("releaseQuota", QuotaManagementRoutes::releaseQuota))
         .setFallbackHandler(timed("notFound", RoutingHandlers::notFoundHandler))
     ;
 
@@ -49,7 +57,9 @@ public class RestServer {
     // {{start:server}}
     public static void main(String[] args) {
     	
-    		QuotaService qs = new QuotaService("TestTree.json");
+    		String quotaTreeJsonFileName = "ExampleTree.json";
+    		log.info("Loading quota configuration from: {}.", quotaTreeJsonFileName);
+    		QuotaService qs = new QuotaService("ExampleTree.json");
     		
         // Once again pull in a bunch of common middleware.
         SimpleServer server = SimpleServer.simpleServer(Middleware.common(ROOT));
