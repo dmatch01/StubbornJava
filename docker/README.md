@@ -93,11 +93,7 @@ $
 ```
 #### Release an allocation
 ```
-$ curl -X POST "localhost:8080/quota/release" -d '
-{
-  "id" : "job1"
-}
-';
+$ curl -X DELETE "localhost:8080/quota/release/{id}"
 $
 ```
 
