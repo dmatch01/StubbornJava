@@ -8,6 +8,8 @@ COPY ./stubbornjava-examples/build/libs/*.json ./githubRepo/StubbornJava/
 
 ENV CLASSPATH=/home/gradle/githubRepo/StubbornJava/stubbornjava-examples/build/libs/*
 
+EXPOSE 8081
+
 WORKDIR /home/gradle/githubRepo/StubbornJava
 
 #CMD tail -f /dev/null
