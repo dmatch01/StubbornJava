@@ -84,10 +84,7 @@ $ curl -X POST "localhost:8081/quota/alloc" -d '
 {
   "id" : "job1",
   "group" : "M",
-  "demand" : [
-  "1",
-  "512"
-  ],
+  "demand" : [ "1" ],
   "priority" : 0,
   "preemptable" : false
 }
