@@ -52,7 +52,7 @@ The image build process will clone a sample `github` repo and build all the jars
 ### Run a Docker Container with the Built Image
 
 ```
-$ docker run -d --name restserver -p 127.0.0.1:8080:8080/tcp restserver:latest
+$ docker run -d -v <host path to directory containing ExampleTree.json>:/root/kubernetes --name restserver -p 127.0.0.1:8081:8081/tcp restserver:latest
 1654e46a . . . 2680506400366c
 $
 ```
