@@ -21,7 +21,7 @@ public class QuotaAllocationCacheDao {
         this.quotaAllocationMap = new ConcurrentHashMap<>();
     }
 
-    public QuotaAllocObj create(String id, String group, int demand, int priority, boolean preemptable) {
+    public QuotaAllocObj create(String id, String group, int[] demand, int priority, boolean preemptable) {
     		QuotaAllocObj quotaAllocObj = new QuotaAllocObj(id, group, demand, priority, preemptable, LocalDate.now());
 
         // If we get a non null value that means the quota already exists in the Map.

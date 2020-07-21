@@ -11,7 +11,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 public class QuotaAllocObj {
     private final String id;
     private final String group;
-    private final int demand;
+    private final int[] demand;
     private final int priority;
     private final boolean preemptable;
     private final LocalDate dateCreated;
@@ -19,7 +19,7 @@ public class QuotaAllocObj {
     public QuotaAllocObj(
             @JsonProperty("id") String id,
             @JsonProperty("group") String group,
-            @JsonProperty("demand") int demand, 
+            @JsonProperty("demand") int[] demand, 
             @JsonProperty("priority") int priority, 
             @JsonProperty("preemptable") boolean preemptable, 
             @JsonProperty("dateCreated") LocalDate dateCreated) {
@@ -40,9 +40,9 @@ public class QuotaAllocObj {
     }
 
 	/**
-	 * @return the demand
+	 * @return the cpu
 	 */
-	public int getDemand() {
+	public int[] getDemand() {
 		return demand;
 	}
 

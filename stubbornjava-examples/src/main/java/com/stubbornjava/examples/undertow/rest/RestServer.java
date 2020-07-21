@@ -57,9 +57,9 @@ public class RestServer {
     // {{start:server}}
     public static void main(String[] args) {
     	
-    		String quotaTreeJsonFileName = "ExampleTree.json";
+    		String quotaTreeJsonFileName = "/root/kubernetes/ExampleTree.json";
     		log.info("Loading quota configuration from: {}.", quotaTreeJsonFileName);
-    		QuotaService qs = new QuotaService("ExampleTree.json");
+    		QuotaService qs  = new QuotaService(quotaTreeJsonFileName);
     		
         // Once again pull in a bunch of common middleware.
         SimpleServer server = SimpleServer.simpleServer(Middleware.common(ROOT));

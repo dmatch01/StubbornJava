@@ -12,5 +12,4 @@ EXPOSE 8081
 
 WORKDIR /home/gradle/githubRepo/StubbornJava
 
-#CMD tail -f /dev/null
 CMD java -Denv=local -Xmx640m com.stubbornjava.examples.undertow.rest.RestServer 

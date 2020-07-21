@@ -9,7 +9,7 @@ import io.undertow.server.HttpHandler;
 
 public class SimpleServer {
     private static final Logger logger = LoggerFactory.getLogger(SimpleServer.class);
-    private static final int DEFAULT_PORT = 8080;
+    private static final int DEFAULT_PORT = 8081;
     private static final String DEFAULT_HOST = "0.0.0.0";
 
     private final Undertow.Builder undertowBuilder;

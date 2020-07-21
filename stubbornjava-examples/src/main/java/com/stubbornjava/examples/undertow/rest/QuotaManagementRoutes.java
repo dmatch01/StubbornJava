@@ -24,7 +24,7 @@ public class QuotaManagementRoutes {
         QuotaAllocObj quotaAllocReqInput = quotaManagementHTTPRequests.quotaAllocObj(exchange);
         String id = quotaAllocReqInput.getID();
         String group = quotaAllocReqInput.getGroup();
-        int demand = quotaAllocReqInput.getDemand();
+        int[] demand = quotaAllocReqInput.getDemand();
         int priority = quotaAllocReqInput.getPriority();
         boolean preemptable = quotaAllocReqInput.isPreemptable();
         
@@ -41,7 +41,7 @@ public class QuotaManagementRoutes {
     }
  
     public static void releaseQuota(HttpServerExchange exchange) {
-    	String id  = quotaManagementHTTPRequests.id(exchange);
+    		String id  = quotaManagementHTTPRequests.id(exchange);
         
         log.info("[releaseQuota] Releasing allocation for job: {}", id);
         boolean release = quotaService.releaseConsumer(id);
