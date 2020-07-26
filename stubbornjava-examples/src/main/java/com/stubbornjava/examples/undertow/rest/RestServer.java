@@ -33,6 +33,7 @@ public class RestServer {
         .delete("/users/{email}", timed("deleteUser", UserRoutes::deleteUser))
         .get("/metrics", timed("metrics", CustomHandlers::metrics))
         .get("/health", timed("health", CustomHandlers::health))
+        .get("/json", timed("json", QuotaManagementRoutes::getJson))
         .post("/quota/alloc", timed("allocateQuota", QuotaManagementRoutes::allocateQuota))
         .delete("/quota/release/{id}", timed("releaseQuota", QuotaManagementRoutes::releaseQuota))
         .setFallbackHandler(timed("notFound", RoutingHandlers::notFoundHandler))
@@ -57,7 +58,8 @@ public class RestServer {
     // {{start:server}}
     public static void main(String[] args) {
     	
-    		String quotaTreeJsonFileName = "/root/kubernetes/ExampleTree.json";
+    		// String quotaTreeJsonFileName = "/root/kubernetes/ExampleTree.json";
+            String quotaTreeJsonFileName = "/Users/chen.wang1ibm.com/code/java/pmodels/Quota Management/ExampleTree.json";
     		log.info("Loading quota configuration from: {}.", quotaTreeJsonFileName);
     		QuotaService qs  = new QuotaService(quotaTreeJsonFileName);
     		

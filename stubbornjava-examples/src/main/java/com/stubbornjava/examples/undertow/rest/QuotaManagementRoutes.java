@@ -2,6 +2,7 @@ package com.stubbornjava.examples.undertow.rest;
 
 import java.util.List;
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +57,16 @@ public class QuotaManagementRoutes {
         quotaAllocationCacheDao.delete(id);
         exchange.setStatusCode(StatusCodes.NO_CONTENT);
         exchange.endExchange();
+    }
+
+    /*
+     * Respond the JSONObject of the current tree in quotaService.
+     */
+    public static void getJson(HttpServerExchange exchange) {
+        // Add to cache and get response body.
+        JSONObject treeJson = quotaService.getJson();
+        Exchange.headers().setHeader(exchange, "Access-Control-Allow-Origin", "*");
+        Exchange.body().sendJson(exchange, treeJson);
     }
 
     public static void listQuotas(HttpServerExchange exchange) {
