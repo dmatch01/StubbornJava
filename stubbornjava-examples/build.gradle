@@ -6,5 +6,6 @@ dependencies {
     compile libs.hashids
     testCompile libs.junit
     implementation files('build/libs/QuotaManagement.jar')
+    implementation files('build/libs/json-simple-1.1.1.jar')
 }
 // {{end:dependencies}}
