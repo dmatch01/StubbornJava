@@ -59,7 +59,6 @@ public class RestServer {
     public static void main(String[] args) {
     	
     		String quotaTreeJsonFileName = "/root/kubernetes/ExampleTree.json";
-                // String quotaTreeJsonFileName = "/Users/chen.wang1ibm.com/code/java/pmodels/Quota Management/ExampleTree.json";
     		log.info("Loading quota configuration from: {}.", quotaTreeJsonFileName);
     		QuotaService qs  = new QuotaService(quotaTreeJsonFileName);
     		
