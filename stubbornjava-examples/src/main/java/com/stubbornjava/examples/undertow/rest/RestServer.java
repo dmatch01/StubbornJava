@@ -33,6 +33,7 @@ public class RestServer {
         .delete("/users/{email}", timed("deleteUser", UserRoutes::deleteUser))
         .get("/metrics", timed("metrics", CustomHandlers::metrics))
         .get("/health", timed("health", CustomHandlers::health))
+        .get("/json", timed("json", QuotaManagementRoutes::getJson))
         .post("/quota/alloc", timed("allocateQuota", QuotaManagementRoutes::allocateQuota))
         .delete("/quota/release/{id}", timed("releaseQuota", QuotaManagementRoutes::releaseQuota))
         .setFallbackHandler(timed("notFound", RoutingHandlers::notFoundHandler))
