@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ibm.quota.web.QuotaService;
+import com.ibm.quota.core.RequestResponse;
 import com.stubbornjava.common.Env;
 import com.stubbornjava.common.undertow.Exchange;
 import com.stubbornjava.common.undertow.handlers.ApiHandlers;
@@ -30,14 +31,18 @@ public class QuotaManagementRoutes {
         boolean preemptable = quotaAllocReqInput.isPreemptable();
         
         log.info("[allocateQuota] Requesting allocation for job: {} group: {}", id, group);
-        boolean alloc = quotaService.allocConsumer(id, group, demand, priority, preemptable);
-        if (alloc == false) {
-            ApiHandlers.badRequest(exchange, String.format("QuotaAllocObj %s already exists.", quotaAllocReqInput.getID()));
+        RequestResponse allocResp = quotaService.allocConsumer(id, group, demand, priority, preemptable);
+        if (allocResp.isAllocated() == false) {
+            ApiHandlers.badRequest(exchange, String.format("QuotaAllocObj %s request failed.", quotaAllocReqInput.getID()));
             return;
         }
         exchange.setStatusCode(StatusCodes.OK);
+        String[] preemptedIds = new String[0];
+        if ((allocResp != null) && (allocResp.getPreemptedIds().length > 0)) {
+        		preemptedIds = allocResp.getPreemptedIds();
+        }
         // Add to cache and get response body.
-        QuotaAllocObj quotaAllocObjResponse = quotaAllocationCacheDao.create(id, group, demand, priority, preemptable);
+        QuotaAllocObj quotaAllocObjResponse = quotaAllocationCacheDao.create(id, group, demand, priority, preemptable, preemptedIds);
         Exchange.body().sendJson(exchange, quotaAllocObjResponse);
     }
  

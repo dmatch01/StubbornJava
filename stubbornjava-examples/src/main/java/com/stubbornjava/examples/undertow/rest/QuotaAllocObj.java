@@ -14,6 +14,7 @@ public class QuotaAllocObj {
     private final int[] demand;
     private final int priority;
     private final boolean preemptable;
+    private final String[] preemptedIds;
     private final LocalDate dateCreated;
 
     public QuotaAllocObj(
@@ -22,6 +23,7 @@ public class QuotaAllocObj {
             @JsonProperty("demand") int[] demand, 
             @JsonProperty("priority") int priority, 
             @JsonProperty("preemptable") boolean preemptable, 
+            @JsonProperty("preemptedIds") String[] preemptedIds, 
             @JsonProperty("dateCreated") LocalDate dateCreated) {
         super();
         this.id = id;
@@ -29,6 +31,7 @@ public class QuotaAllocObj {
         this.demand = demand;
         this.priority = priority;
         this.preemptable = preemptable;
+        this.preemptedIds = preemptedIds;
         this.dateCreated = dateCreated;
     }
 
@@ -58,6 +61,13 @@ public class QuotaAllocObj {
 	 */
 	public boolean isPreemptable() {
 		return preemptable;
+	}
+
+	/**
+	 * @return the preemptedJobs
+	 */
+	public String[] getPreemptedIds() {
+		return preemptedIds;
 	}
 
 	/**
