@@ -1,6 +1,14 @@
 FROM gradle
 
+RUN apt update -y
+
+RUN apt install -y python3 python3-pip && pip3 install kubernetes
+
 RUN mkdir -p githubRepo/StubbornJava
+
+COPY ./hack/*.py ./githubRepo/StubbornJava/
+
+COPY ./hack/*.sh ./githubRepo/StubbornJava/
 
 COPY ./ ./githubRepo/StubbornJava
 
@@ -12,4 +20,4 @@ EXPOSE 8081
 
 WORKDIR /home/gradle/githubRepo/StubbornJava
 
-CMD java -Denv=local -Xmx640m com.stubbornjava.examples.undertow.rest.RestServer 
+CMD ./resourceplan_controller.sh && java -Denv=local -Xmx640m com.stubbornjava.examples.undertow.rest.RestServer

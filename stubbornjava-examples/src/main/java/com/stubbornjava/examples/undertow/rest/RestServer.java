@@ -36,6 +36,7 @@ public class RestServer {
         .get("/json", timed("json", QuotaManagementRoutes::getJson))
         .post("/quota/alloc", timed("allocateQuota", QuotaManagementRoutes::allocateQuota))
         .delete("/quota/release/{id}", timed("releaseQuota", QuotaManagementRoutes::releaseQuota))
+        .post("/quota/node/add", timed("addQuota", QuotaManagementRoutes::addQuota))
         .setFallbackHandler(timed("notFound", RoutingHandlers::notFoundHandler))
     ;
 
@@ -58,9 +59,10 @@ public class RestServer {
     // {{start:server}}
     public static void main(String[] args) {
     	
-    		String quotaTreeJsonFileName = "/root/kubernetes/ExampleTree.json";
-    		log.info("Loading quota configuration from: {}.", quotaTreeJsonFileName);
-    		QuotaService qs  = new QuotaService(quotaTreeJsonFileName);
+        	QuotaService qs  = new QuotaService();
+        	String treeInfo = "{ \"name\": \"ExampleTree\", \"resourceNames\": [ \"cpu\", \"memory\" ] }";
+    		qs.createTreeStart(treeInfo);
+    		//qs.createTree()
     		
         // Once again pull in a bunch of common middleware.
         SimpleServer server = SimpleServer.simpleServer(Middleware.common(ROOT));

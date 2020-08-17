@@ -66,7 +66,7 @@ public class QuotaAllocObj {
 	/**
 	 * @return the preemptedJobs
 	 */
-	public String[] getPreemptedIds() {
+	public String[] getPreemptedJobs() {
 		return preemptedIds;
 	}
 

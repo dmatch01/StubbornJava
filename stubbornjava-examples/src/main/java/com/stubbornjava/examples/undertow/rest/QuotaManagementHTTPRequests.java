@@ -21,6 +21,10 @@ public class QuotaManagementHTTPRequests {
     public QuotaAllocObj quotaAllocObj(HttpServerExchange exchange) {
         return Exchange.body().parseJson(exchange, QuotaAllocObj.typeRef());
     }
+    
+    public QuotaAddObj quotaAddObj(HttpServerExchange exchange) {
+        return Exchange.body().parseJson(exchange, QuotaAddObj.typeRef());
+    }
 
     public void exception(HttpServerExchange exchange) {
         boolean exception = Exchange.queryParams()
