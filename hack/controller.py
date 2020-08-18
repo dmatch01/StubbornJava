@@ -16,7 +16,8 @@ class Controller(threading.Thread):
        calls to Kubernetes API.
     """
 
-    def __init__(self, pods_watcher, immortalcontainers_watcher, corev1api,
+    #def __init__(self, pods_watcher, immortalcontainers_watcher, corev1api,
+    def __init__(self, immortalcontainers_watcher,
                  customsapi, custom_group, custom_version, custom_plural,
                  custom_kind, workqueue_size=10):
         """Initializes the controller.
@@ -36,15 +37,15 @@ class Controller(threading.Thread):
         # `workqueue` contains namespace/name of immortalcontainers whose status
         # must be reconciled
         self.workqueue = queue.Queue(workqueue_size)
-        self.pods_watcher = pods_watcher
+        # self.pods_watcher = pods_watcher
         self.immortalcontainers_watcher = immortalcontainers_watcher
-        self.corev1api = corev1api
+        # self.corev1api = corev1api
         self.customsapi = customsapi
         self.custom_group = custom_group
         self.custom_version = custom_version
         self.custom_plural = custom_plural
         self.custom_kind = custom_kind
-        self.pods_watcher.add_handler(self._handle_pod_event)
+        # self.pods_watcher.add_handler(self._handle_pod_event)
         self.immortalcontainers_watcher.add_handler(
             self._handle_immortalcontainer_event)
 
@@ -64,6 +65,7 @@ class Controller(threading.Thread):
     def _handle_immortalcontainer_event(self, event):
         """Handle an event from the immortalcontainers watcher putting the
            object name in the `workqueue`."""
+        logger.info("Error Event: {:s}".format(json.dumps(event, indent=2)))
         self._queue_work(event['object']['metadata']['namespace'] +
                          "/"+event['object']['metadata']['name'])
 

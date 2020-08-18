@@ -42,14 +42,26 @@ class ThreadedWatcher(threading.Thread):
            directly, but using `start()`.
         """
         self.watcher = watch.Watch()
+        logger.info("ThreadWatcher run for func:%s,  func_args: %s, func_kwargs: %s", self.func, self.func_args, self.func_args)
         stream = self.watcher.stream(
             self.func, *self.func_args, **self.func_kwargs)
+        # Append continue option for reconnection later
+        L = list(self.func_args)
+        L.append('_continue=_continue')
+        self.func_args = tuple(L)
+        L = list(self.func_kwargs)
+        L.append('_continue=_continue')
+        self.func_kwargs = tuple(L)
+
         for event in stream:
             for handler in self.handlers:
                 try:
                     handler(event)
                 except:
                     logger.error("Error in event handler", exc_info=True)
+                    logger.info("ThreadWatcher run for func:%s,  func_args: %s, func_kwargs: %s", self.func, self.func_args, self.func_args)
+                    stream = self.watcher.stream(
+                        self.func, *self.func_args, **self.func_kwargs)
 
     def stop(self):
         """Stops listening and dispatching events."""

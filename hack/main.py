@@ -23,24 +23,25 @@ def main():
     else:
         config.load_incluster_config()
 
-    corev1api = client.CoreV1Api()
+    # corev1api = client.CoreV1Api()
     customsapi = client.CustomObjectsApi()
 
     logger.info('Waiting for quota manager to initialize...')
     time.sleep(10)
 
     # Changing this it's possible to work on all the namespaces or choose only one
-    pods_watcher = ThreadedWatcher(corev1api.list_pod_for_all_namespaces)
+    # pods_watcher = ThreadedWatcher(corev1api.list_pod_for_all_namespaces)
     immortalcontainers_watcher = ThreadedWatcher(
         customsapi.list_cluster_custom_object, defs.CUSTOM_GROUP,
         defs.CUSTOM_VERSION, defs.CUSTOM_PLURAL
     )
-    controller = Controller(pods_watcher, immortalcontainers_watcher, corev1api,
+    # controller = Controller(pods_watcher, immortalcontainers_watcher, corev1api,
+    controller = Controller(immortalcontainers_watcher,
                             customsapi, defs.CUSTOM_GROUP, defs.CUSTOM_VERSION,
                             defs.CUSTOM_PLURAL, defs.CUSTOM_KIND)
 
     controller.start()
-    pods_watcher.start()
+    # pods_watcher.start()
     immortalcontainers_watcher.start()
     try:
         controller.join()
