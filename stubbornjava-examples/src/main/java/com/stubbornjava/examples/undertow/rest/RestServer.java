@@ -5,6 +5,7 @@ import static com.stubbornjava.common.undertow.handlers.CustomHandlers.timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ibm.quota.web.MultiQuotaService;
 import com.ibm.quota.web.QuotaService;
 import com.stubbornjava.common.Env;
 import com.stubbornjava.common.exceptions.ApiException;
@@ -33,7 +34,8 @@ public class RestServer {
         .delete("/users/{email}", timed("deleteUser", UserRoutes::deleteUser))
         .get("/metrics", timed("metrics", CustomHandlers::metrics))
         .get("/health", timed("health", CustomHandlers::health))
-        .get("/json", timed("json", QuotaManagementRoutes::getJson))
+        //.get("/json", timed("json", QuotaManagementRoutes::getJson))
+        .get("/json", QuotaManagementRoutes::getJson)
         .post("/quota/alloc", timed("allocateQuota", QuotaManagementRoutes::allocateQuota))
         .delete("/quota/release/{id}", timed("releaseQuota", QuotaManagementRoutes::releaseQuota))
         .post("/quota/node/add", timed("addQuota", QuotaManagementRoutes::addQuota))
@@ -59,10 +61,11 @@ public class RestServer {
     // {{start:server}}
     public static void main(String[] args) {
     	
-        	QuotaService qs  = new QuotaService();
-        	String treeInfo = "{ \"name\": \"ExampleTree\", \"resourceNames\": [ \"cpu\", \"memory\" ] }";
-    		qs.createTreeStart(treeInfo);
-    		//qs.createTree()
+    		MultiQuotaService qs  = new MultiQuotaService();
+        	String treeInfo1 = "{ \"name\": \"quota_context\", \"resourceNames\": [ \"cpu\", \"memory\" ] }";
+    		qs.createTreeStart(treeInfo1);
+        	String treeInfo2 = "{ \"name\": \"quota_service\", \"resourceNames\": [ \"cpu\", \"memory\" ] }";
+    		qs.createTreeStart(treeInfo2);
     		
         // Once again pull in a bunch of common middleware.
         SimpleServer server = SimpleServer.simpleServer(Middleware.common(ROOT));

@@ -52,7 +52,7 @@ public class CustomHandlers {
     }
 
     public static AccessLogHandler accessLog(HttpHandler next) {
-        final Logger logger = LoggerFactory.getLogger("com.stubbornjava.accesslog");
+        final Logger logger = LoggerFactory.getLogger("com.stubbornjava.common.undertow.handlers.CustomHandlers");
         return accessLog(next, logger);
     }
 

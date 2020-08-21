@@ -171,6 +171,16 @@ class Controller(threading.Thread):
         parent = dict(parent = parent_val)
         return parent
 
+    def _new_tree(self, immortalcontainer):
+        """Returns tree dictionary from metadata or empty string"""
+        tree_val = ""
+        try:
+            tree_val = immortalcontainer['metadata']['labels']['tree']
+        except KeyError:
+            logger.info("No tree label found.  Setting tree to empty string.")
+        tree = dict(tree = tree_val)
+        return tree
+
     def _new_quota_restriction(self, child):
         """Returns quota restriction boolean, hard=true/hard=false(soft) """
         hard_restriction_val = "false"
@@ -211,6 +221,10 @@ class Controller(threading.Thread):
 
         # Get the parent first
         parent = self._new_parent(immortalcontainer)
+
+        # Get the assigned tree
+        tree = self._new_tree(immortalcontainer)
+
         # Interate through children
         for child in children:
             quota = dict()
@@ -221,6 +235,9 @@ class Controller(threading.Thread):
             # Set the parent
             quota.update(parent)
 
+            # Set the tree
+            quota.update(tree)
+            
             # Get the quota restriction (hard/soft)
             quota_hard_limit = self._new_quota_restriction(child)
             quota.update(quota_hard_limit)

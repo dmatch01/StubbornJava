@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 public class QuotaAddObj {
     private final String id;
     private final String parent;
+    private final String tree;
     private final String hard;
     private final QuotaLimitObj[] quota;
     private final LocalDate dateCreated;
@@ -18,12 +19,14 @@ public class QuotaAddObj {
     public QuotaAddObj(
             @JsonProperty("id") String id,
             @JsonProperty("parent") String parent,
+            @JsonProperty("tree") String tree,
             @JsonProperty("hard") String hard, 
             @JsonProperty("quota") QuotaLimitObj[] quota, 
             @JsonProperty("dateCreated") LocalDate dateCreated) {
         super();
         this.id = id;
         this.parent = parent;
+        this.tree = tree;
         this.hard = hard;
         this.quota = quota;
         this.dateCreated = dateCreated;
@@ -41,6 +44,13 @@ public class QuotaAddObj {
 	 */
     public String getParent() {
         return parent;
+    }
+
+	/**
+	 * @return the tree
+	 */
+    public String getTree() {
+        return tree;
     }
 
     /**
@@ -61,7 +71,7 @@ public class QuotaAddObj {
         return dateCreated;
     }
     
-    public String toJSONString() {
+    public String nodeToJSONString() {
 
     		StringBuilder s = new StringBuilder();
     		s.append("{"); // json string
