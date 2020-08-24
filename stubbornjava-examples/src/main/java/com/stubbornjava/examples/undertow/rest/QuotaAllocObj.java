@@ -63,11 +63,11 @@ public class QuotaAllocObj {
 	public boolean isPreemptable() {
 		return preemptable;
 	}
-
+	
 	/**
-	 * @return the preemptedJobs
+	 * @return the preemptedIds
 	 */
-	public String[] getPreemptedJobs() {
+	public String[] getPreemptedIds() {
 		return preemptedIds;
 	}
 
@@ -154,6 +154,16 @@ public class QuotaAllocObj {
 		s.append(preemptable);
 		s.append("\n");
 		
+		if (preemptedIds != null) {
+			s.append("preempted ids:[");
+			for (int i= 0; i < preemptedIds.length; i++) {
+				if (i > 0)
+					s.append("  ");
+				s.append(preemptedIds[i]);
+			}
+			s.append("]\n");
+		}
+
 		return s.toString();
     }
 }

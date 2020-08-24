@@ -42,6 +42,7 @@ public class QuotaManagementRoutes {
         Map<String, Integer[]> demandsMap = quotaAllocReqInput.getGroupDemandsMap();
         int priority = quotaAllocReqInput.getPriority();
         boolean preemptable = quotaAllocReqInput.isPreemptable();
+        boolean unpreemptable = !preemptable;
 
         //Check for initialize tree
         List<JSONObject> quotaTrees = quotaService.getJson();
@@ -52,18 +53,20 @@ public class QuotaManagementRoutes {
 
         log.info("[allocateQuota] Requesting allocation for job: {} request: \n{}", id, quotaAllocReqInput.toString());
         int type = 0;
-        AllocationResponse allocResp = quotaService.allocConsumer(id, groupsMap, demandsMap, priority, type, preemptable);
+        AllocationResponse allocResp = quotaService.allocConsumer(id, groupsMap, demandsMap, priority, type, unpreemptable);
         if (allocResp.isAllocated() == false) {
             ApiHandlers.badRequest(exchange, String.format("QuotaAllocObj %s request failed.", quotaAllocReqInput.getID()));
             return;
         }
         exchange.setStatusCode(StatusCodes.OK);
         String[] preemptedIds = new String[0];
-        if ((allocResp != null) && (allocResp.getPreemptedIds().length > 0)) {
+        if (allocResp != null)  {
         		preemptedIds = allocResp.getPreemptedIds();
         }
+
         // Add to cache and get response body.
         QuotaAllocObj quotaAllocObjResponse = quotaAllocationCacheDao.create(id, groups, demand, priority, preemptable, preemptedIds);
+        log.info("[allocateQuota] Allocation response for job: {} request: \n{}", id, quotaAllocObjResponse.toString());
         Exchange.body().sendJson(exchange, quotaAllocObjResponse);
     }
  
